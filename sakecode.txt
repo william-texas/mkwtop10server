@@ -1,0 +1,18 @@
+283414C32 00000020 (if y button pressed on first classic controller)
+
+068961d8 00000020 (start string write that is the default which is no glitch)
+68747470 3A2F2F6D
+6B632E72 6332342E
+78797A2F 52616365
+53657276 69636500
+
+CC0000000 00000000 (set up on/off switch)
+
+068961d8 00000020 (start string write that is glitch)
+68747470 3A2F2F6D
+6B632E72 6332342E
+78797A2F 52616365
+53657276 69636532
+00000000 00000000
+
+E0000000 00000000 (terminator)
