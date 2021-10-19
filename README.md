@@ -8,6 +8,5 @@ todo add actual gecko codes
 
 
 To do list:
-add support for unrestricted times via button activator
 
 automatically download times in the background and store them locally, refresh every x minutes
