@@ -101,9 +101,10 @@ async def do_parseghost_request():
 '''
 '''
 
-if sys.argv[1] == 'prod':
-	config.bind = ["104.131.12.248:80"] # at this ip address
-	asyncio.run(serve(app, config))
-else:
+try: 
+	sys.argv[1]
+	if sys.argv[1] == 'prod':
+		config.bind = ["104.131.12.248:80"] # at this ip address
+except:
 	config.bind = ["localhost:8000"] # at this ip address
 	asyncio.run(serve(app, config))
