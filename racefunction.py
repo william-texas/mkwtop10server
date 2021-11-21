@@ -10,7 +10,7 @@ import time as execution_time
 
 requests_cache.install_cache('mkl_cache', expire_after=1200)
 
-async def create_top_10(request_data):
+async def create_top_10(request_data, normal):
 
 	#open the incoming request
 	incoming_request = io.BytesIO(request_data)
@@ -29,8 +29,10 @@ async def create_top_10(request_data):
 	course_url = []
 	mkl_region = {'0':'world', '1':'japan', '2':'americas', '3':'europe', '4':'oceania'}
 	mkl_course = {'8':"49", '1':"50", '2':"51", '4':"52", '0':"53", '5':"54", '6':"55", '7':"56", '9':"57", '15':"58", '3':"60", '11':"59", '10':"62", '14':"61", '12':"63", '13':"64", '16':"65", '20':"66", '25':"67", '26':"68", '27':"69", '31':"70", '23':"71", '18':"72", '21':"73", '30':"74", '29':"75", '17':"76", '24':"77", '22':"78", '19':"79", '28':"80", '390':'80'}
-	course_url = f'https://www.mkleaderboards.com/api/charts/mkw_nonsc_{mkl_region[region_id]}/{mkl_course[course_id]}'
-
+	if normal == True:
+		course_url = f'https://www.mkleaderboards.com/api/charts/mkw_nonsc_{mkl_region[region_id]}/{mkl_course[course_id]}'
+	else:
+		course_url = f'https://www.mkleaderboards.com/api/charts/mkw_combined_{mkl_region[region_id]}/{mkl_course[course_id]}'
 	#requesting and parsing data from mkl API
 	print(f'Requesting leaderboard data for track {course_id} in region {region_id} from MKLeaderboards API ({course_url})...')
 	res = requests.get(f'{course_url}')

@@ -1,11 +1,8 @@
 from quart import Quart
 from quart import request
 import quart
-import threading
 from hypercorn.config import Config
 from hypercorn.asyncio import serve
-from xml.dom import minidom
-import os
 import raceutil
 import racefunction
 import raceclasses
@@ -14,6 +11,7 @@ import asyncio
 import sakeutil
 import binascii
 import io
+import sys
 
 config = Config()
 
@@ -21,10 +19,19 @@ app = Quart('server')
 
 @app.route('/RaceService', methods=['POST'])
 
-async def do_top10():
+async def doNgTop10():
 	print('Received Request For Top 10 Data...')
 	request_data = await request.data
-	response = await racefunction.create_top_10(request_data)
+	response = await racefunction.create_top_10(request_data, True)
+	print('Response Sent.')
+	return response
+
+@app.route('/RaceService2', methods=['POST'])
+
+async def doScTop10():
+	print('Received Request For Top 10 Data...')
+	request_data = await request.data
+	response = await racefunction.create_top_10(request_data, False)
 	print('Response Sent.')
 	return response
 
@@ -93,5 +100,10 @@ async def do_parseghost_request():
 
 '''
 '''
-config.bind = ["104.131.12.248:80"] # at this ip address
-asyncio.run(serve(app, config))
+
+if sys.argv[1] == 'prod':
+	config.bind = ["104.131.12.248:80"] # at this ip address
+	asyncio.run(serve(app, config))
+else:
+	config.bind = ["localhost:8000"] # at this ip address
+	asyncio.run(serve(app, config))
