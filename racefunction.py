@@ -123,7 +123,7 @@ async def create_top_10(request_data):
 		#send the xml to be returned to the client
 		return xml_str
 
-	else if course_id >= 32: #competition rankings request, repurposed for total time top 10
+	elif course_id >= 32: #competition rankings request, repurposed for total time top 10
 		
 		incoming_request = io.BytesIO(request_data)
 
