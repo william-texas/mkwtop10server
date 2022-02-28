@@ -133,6 +133,17 @@ def parse_mkl_leaderboard(leaderboard_json):
         i+=1
     return instances
 
+def get_fill_ins_from_mkl_pid(pids):
+    ghosts = []
+    fill_in_db = TinyDB('fill_ins.json')
+    for pid in pids:
+        existing_data = fill_in_db.search(User.mkl_pid == pid)
+        if existing_data != []:
+            ghost_download = (existing_data[0])['download_link']
+        else:
+            ghost_download = 'https://cdn.discordapp.com/attachments/456603906785411072/833075555112321104/noghost.rkg'
+        ghosts.append(ghost_download)
+    return ghosts
 
 def ghost_url_from_id(ghost_id):
     '''returns ghost url W/O .html or .rkg'''
