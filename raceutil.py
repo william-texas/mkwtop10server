@@ -137,7 +137,7 @@ def get_fill_ins_from_mkl_pid(pids):
     ghosts = []
     fill_in_db = TinyDB('fill_ins.json')
     for pid in pids:
-        existing_data = fill_in_db.search(User.mkl_pid == pid)
+        existing_data = fill_in_db.search(User.mkl_pid == int(pid))
         if existing_data != []:
             ghost_download = (existing_data[0])['download_link']
         else:
@@ -150,9 +150,12 @@ def ghost_url_from_id(ghost_id):
     return config.WEB_DOMAIN + '/time-trials/rkgd/' + ghost_id[:2] + '/' + ghost_id[2:4] + '/' + ghost_id[4:]
 
 def channel_time_parse(time):
-    minutes = int(time[0:1]) * 60000
-    seconds = int(time[2:4]) * 1000
-    milliseconds = int(time[5:]) 
+    minutes = int(time[0:2]) * 60000
+    seconds = int(time[3:5]) * 1000
+    milliseconds = int(time[6:]) 
 
     total = minutes + seconds + milliseconds
     return total
+
+def match_flag_with_country_code(flag):
+    return raceclasses.country_table[flag]
