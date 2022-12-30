@@ -1,17 +1,10 @@
 from mkw_ghosts import MkwGhosts
 import base64
-from xml.dom import minidom
-import os
 from tinydb import TinyDB, Query
 from multiprocessing.dummy import Pool as ThreadPool
 import requests_cache
 import requests
 import raceclasses
-import raceconfig
-import binascii
-import io
-import asyncio
-from aiohttp_client_cache import CachedSession, SQLiteBackend
 
 requests_cache.install_cache('ghost_cache', allowable_codes=(200,), backend='sqlite', expire_after=-1)
 User = Query()

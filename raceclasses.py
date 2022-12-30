@@ -1,5 +1,3 @@
-import raceconfig
-
 country_table = {'JP': 1,
                  'AI': 8,
                  'AG': 9,

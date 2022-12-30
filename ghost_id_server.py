@@ -3,13 +3,9 @@ from quart import request
 import quart
 from hypercorn.config import Config
 from hypercorn.asyncio import serve
-import raceutil
 import racefunction
-import raceclasses
-import aiohttp
 import asyncio
 import sakeutil
-import binascii
 import io
 import sys
 

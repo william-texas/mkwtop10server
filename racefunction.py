@@ -2,10 +2,7 @@ import requests
 import requests_cache
 from bs4 import BeautifulSoup
 from xml.dom import minidom
-import os
 import raceutil
-import raceclasses
-import raceconfig
 import io
 import time as execution_time
 
