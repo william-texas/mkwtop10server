@@ -5,9 +5,7 @@ from kaitaistruct import KaitaiStruct, KaitaiStream, BytesIO
 from enum import Enum
 
 
-
 class MkwGhosts(KaitaiStruct):
-
     class Controllers(Enum):
         wii_wheel = 0
         wii_remote = 1
@@ -52,6 +50,7 @@ class MkwGhosts(KaitaiStruct):
         friend_ghost_30 = 36
         normal_staff_ghost = 37
         expert_staff_ghost = 38
+
     def __init__(self, _io, _parent=None, _root=None):
         self._io = _io
         self._parent = _parent
@@ -104,6 +103,3 @@ class MkwGhosts(KaitaiStruct):
             self.finishing_time_minutes = self._io.read_bits_int_be(7)
             self.finishing_time_seconds = self._io.read_bits_int_be(7)
             self.finishing_time_milliseconds = self._io.read_bits_int_be(10)
-
-
-
