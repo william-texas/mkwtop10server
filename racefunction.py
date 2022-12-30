@@ -1,10 +1,12 @@
+import io
+import time as execution_time
+from xml.dom import minidom
+
 import requests
 import requests_cache
 from bs4 import BeautifulSoup
-from xml.dom import minidom
+
 import raceutil
-import io
-import time as execution_time
 
 requests_cache.install_cache('mkl_cache', expire_after=1200)
 

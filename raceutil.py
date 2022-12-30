@@ -1,10 +1,12 @@
-from mkw_ghosts import MkwGhosts
 import base64
-from tinydb import TinyDB, Query
 from multiprocessing.dummy import Pool as ThreadPool
-import requests_cache
+
 import requests
+import requests_cache
+from tinydb import TinyDB, Query
+
 import raceclasses
+from mkw_ghosts import MkwGhosts
 
 requests_cache.install_cache('ghost_cache', allowable_codes=(200,), backend='sqlite', expire_after=-1)
 User = Query()
@@ -145,11 +147,6 @@ def get_fill_ins_from_mkl_pid(pids):
             ghost_download = 'https://cdn.discordapp.com/attachments/456603906785411072/833075555112321104/noghost.rkg'
         ghosts.append(ghost_download)
     return ghosts
-
-
-def ghost_url_from_id(ghost_id):
-    '''returns ghost url W/O .html or .rkg'''
-    return config.WEB_DOMAIN + '/time-trials/rkgd/' + ghost_id[:2] + '/' + ghost_id[2:4] + '/' + ghost_id[4:]
 
 
 def channel_time_parse(time):
