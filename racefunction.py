@@ -1,5 +1,6 @@
 import io
 import time as execution_time
+import logging
 from xml.dom import minidom
 
 import requests
@@ -10,9 +11,16 @@ import raceutil
 
 requests_cache.install_cache('mkl_cache', expire_after=1200)
 
+logging.basicConfig(filename='server.log', encoding='utf-8', level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
-async def create_top_10(request_data, normal):
+async def create_top_10(request_data, normal, address):
     # open the incoming request
+    if normal == True:
+        logcat = ""
+    else:
+        logcat = " shortcut"
+    logging.info(f'NEW Request: {address} requests Track {course_id}{logcat} \'{mkl_region}\' top 10.')
+    function_start_time = execution_time.time()
     incoming_request = io.BytesIO(request_data)
 
     # write the request to a file, for many reasons including debugging and also for the sake of having a valid request handy
@@ -26,7 +34,6 @@ async def create_top_10(request_data, normal):
     region_id = parameters.getElementsByTagName('ns1:regionid')[0].firstChild.nodeValue
 
     if int(course_id) <= 31:  # normal 32 courses
-        print("hi")
         # mapping the values in the incoming requests to their mkl equivalent values
         course_url = []
         mkl_region = {'0': 'world', '1': 'japan', '2': 'americas', '3': 'europe', '4': 'oceania'}
@@ -40,14 +47,14 @@ async def create_top_10(request_data, normal):
             course_url = f'https://www.mkleaderboards.com/api/charts/mkw_combined_{mkl_region[region_id]}/{mkl_course[course_id]}'
 
         # requesting and parsing data from mkl API
-        print(
-            f'Requesting leaderboard data for track {course_id} in region {region_id} from MKLeaderboards API ({course_url})...')
+        #print(
+        #    f'Requesting leaderboard data for track {course_id} in region {region_id} from MKLeaderboards API ({course_url})...')
         res = requests.get(f'{course_url}')
         leaderboard_json = res.json(encoding='utf-8-sig')
         leader_board_data = raceutil.parse_mkl_leaderboard(leaderboard_json)
         pids = raceutil.return_pids(leaderboard_json)
         amount_of_records = len(pids)
-        print('Parsed MKL Leaderboard Data.')
+        #print('Parsed MKL Leaderboard Data.')
 
         # creating the xml document
         returned_packet = minidom.Document()
@@ -72,10 +79,10 @@ async def create_top_10(request_data, normal):
             ghost_url_list.append(leader_board_data[i].ghost_url)
 
         # asynchronously downloading the ghosts in order to help bypass the slowness of chadsoft
-        print('Doing ghost downloads...')
+        #print('Doing ghost downloads...')
         start_time = execution_time.time()
         ghosts = raceutil.asyncdownload(ghost_url_list)
-        print(f'Ghost downloads complete. Took {execution_time.time() - start_time} seconds.')
+        #print(f'Ghost downloads complete. Took {execution_time.time() - start_time} seconds.')
         # creating time data
         timevalues = []
         for ghost in leader_board_data:
@@ -126,9 +133,10 @@ async def create_top_10(request_data, normal):
         f.write(xml_str)
         f.close()
 
+        logging.info(f'COMPLETED Request in {execution_time.time() - function_start_time} seconds.')
+
         # send the xml to be returned to the client
         print(xml_str)
-        print('hey')
         return xml_str
 
     elif int(course_id) >= 32:  # competition rankings request, repurposed for total time top 10

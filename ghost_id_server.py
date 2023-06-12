@@ -1,6 +1,8 @@
 import asyncio
 import io
 import sys
+import xml.dom
+import logging
 from xml.dom import minidom
 
 import quart
@@ -21,7 +23,7 @@ app = Quart('server')
 async def doNgTop10():
     print('Received Request For Top 10 Data...')
     request_data = await request.data
-    response = await racefunction.create_top_10(request_data, True)
+    response = await racefunction.create_top_10(request_data, True, request.remote_addr)
     print('Response Sent.')
     return response
 
@@ -57,49 +59,7 @@ async def do_parseghost_request():
         response.headers['Content-Disposition'] = 'attachment; filename=ghost.bin'
         response.headers['Sake-File-Result'] = '0'
         response.headers['Content-Type'] = 'application/octet-stream'
-        '''
-        sakesearchparams = params.getElementsByTagName('ns1:filter')[0].firstChild.nodeValue
-        print(sakesearchparams)
-        print(len(sakesearchparams))
-        parsed = (sakesearchparams.replace(' and ', '\n')).splitlines()
 
-        print(parsed)
-        if len(parsed) == 3:
-            sake_id = (parsed[0]).replace('course = ', '') + (parsed[2].replace('region = ', ''))
-            return sake_id
-        elif len(parsed) == 2:
-            sake_id = (parsed[0]).replace('course = ', '') + '0'
-            return sake_id
-        else:
-            sake_id = 1234 #returns this if the request is not from mario kart wii
-            return sake_id
-        '''
-
-
-'''
-		returned_packet = minidom.Document()
-		returned_packet.toxml(encoding="UTF-8")
-		soapenv = returned_packet.createElement('soap:Envelope')
-		soapbody = returned_packet.createElement('soap:Body')
-		seapenv.appendChild(soapbody)
-		saerchforrecordsresponse = returned_packet.createElement('SearchForRecordsResponse')
-		soapbody.appendChild(SearchForRecordsResponse)
-		searchforrecordsresult = returned_packet.createElement('searchforrecordsresult')
-		'''
-'''
-		returned_packet = minidom.parse(header.read())
-		returned_packet.getElementsByTagName('intValue')[0].childNodes[0].nodeValue  = sake_id
-		response = await quart.make_response(returned_packet)
-		response.headers['Content-Disposition'] = 'attachment; filename=ghost.bin'
-		response.headers['Sake-File-Result'] = '0'
-		response.headers['Content-Type'] = 'application/octet-stream'
-		print(response)
-		return response
-
-		'''
-
-'''
-'''
 
 try:
     sys.argv[1]
